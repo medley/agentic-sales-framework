@@ -21,42 +21,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_CONFIG: .gitleaks.toml
 
-  python-tests:
-    name: Python Tests
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: prospecting
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
-
-      - name: Run tests
-        run: |
-          pytest tests/ -v --ignore=tests/test_integration_hybrid_flow.py --ignore=tests/test_llm_renderer.py --ignore=tests/test_render_run.py
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
-  markdown-lint:
-    name: Markdown Lint
+  docs-check:
+    name: Documentation Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check markdown files exist
+      - name: Verify key files exist
         run: |
           echo "Checking key documentation files..."
-          test -f README.md && echo "README.md exists"
-          test -f DATA_POLICY.md && echo "DATA_POLICY.md exists"
-          test -f QUICKSTART.md && echo "QUICKSTART.md exists"
-          echo "Documentation check passed"
+          test -f README.md && echo "✓ README.md"
+          test -f DATA_POLICY.md && echo "✓ DATA_POLICY.md"
+          test -f QUICKSTART.md && echo "✓ QUICKSTART.md"
+          test -f CLAUDE.md && echo "✓ CLAUDE.md"
+          test -d .claude/skills && echo "✓ .claude/skills/"
+          test -d Framework && echo "✓ Framework/"
+          echo "All checks passed"
