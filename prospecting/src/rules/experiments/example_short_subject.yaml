@@ -1,0 +1,21 @@
+# Example experiment: Short subject lines
+# This demonstrates how experiments can override base config
+
+# Override subject lines with shorter versions
+subjects:
+  capa:
+    - "CAPA backlog"
+    - "CAPA closure"
+  
+  audit_readiness:
+    - "Audit prep"
+    - "Inspection ready?"
+  
+  batch_release:
+    - "Batch delays"
+    - "Release time"
+
+# Optionally adjust constraints for this experiment
+constraints:
+  default_profile:
+    subject_word_max: 3  # Even shorter subjects

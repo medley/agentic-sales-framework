@@ -1,0 +1,22 @@
+# Agentic Sales Framework - Python Dependencies
+#
+# Install with: pip install -r requirements.txt
+#
+# Note: Some skills also require system dependencies:
+# - LibreOffice (soffice) for Excel/PowerPoint conversion
+# - poppler-utils (pdftoppm) for PDF thumbnail generation
+
+# Core dependencies
+python-dotenv>=1.0.0
+anthropic>=0.34.0
+
+# ROI Model skill
+openpyxl>=3.1.0
+
+# Sales Presentation skill
+Pillow>=10.0.0
+python-pptx>=0.6.21
+
+# Prospecting module (see prospecting/requirements.txt for full list)
+# requests>=2.31.0
+# beautifulsoup4>=4.12.0

@@ -1,0 +1,10 @@
+# Prospecting Module Dependencies
+
+requests>=2.31.0
+python-dotenv>=1.0.0
+anthropic>=0.34.0
+beautifulsoup4>=4.12.0
+
+# Optional: ZoomInfo integration
+# Install from GitHub: pip install git+https://github.com/Zoominfo/api-auth-python-client.git
+# Required only if using ZoomInfo contact/company enrichment

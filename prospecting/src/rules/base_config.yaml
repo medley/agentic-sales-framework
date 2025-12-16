@@ -1,0 +1,812 @@
+# Base configuration for email generation system
+# Phase 3: Persona-product safety with improved validation
+
+# =============================================================================
+# PRODUCT DEFINITIONS
+# =============================================================================
+# Product family for targeting (customize for your products)
+# - product_id: Internal stable identifier (use in code)
+# - display_name: External label for outputs
+# - aliases: Legacy tokens for backward compatibility (qx, mx, etc.)
+# - forbidden_phrases: Multi-word triggers for forbidden product validation
+# - unique_identifiers: Terms that uniquely identify this product (used for strict matching)
+
+products:
+  quality_qms:
+    product_id: "quality_qms"
+    display_name: "Quality Excellence (Qx)"
+    aliases: ["qx", "quality"]
+    description: "QMS, CAPA, deviations, document control, training, audit management"
+    # Phrases that uniquely identify QMS product context (not general domain terms)
+    forbidden_phrases:
+      - "capa backlog"
+      - "capa cycle time"
+      - "deviation closure"
+      - "qms implementation"
+      - "quality management system"
+      - "document control workflow"
+      - "training compliance gap"
+      - "audit finding closure"
+    # Terms that uniquely identify this product (high confidence)
+    unique_identifiers:
+      - "capa"
+      - "qms"
+      - "deviation management"
+
+  manufacturing_mes:
+    product_id: "manufacturing_mes"
+    display_name: "Manufacturing Excellence (Mx)"
+    aliases: ["mx", "manufacturing"]
+    description: "Batch records, production, MES integration, process execution"
+    forbidden_phrases:
+      - "batch release time"
+      - "batch record review"
+      - "electronic batch record"
+      - "review by exception"
+      - "batch disposition"
+      - "production throughput"
+      - "shop floor execution"
+      - "mes integration"
+    unique_identifiers:
+      - "ebr"
+      - "batch release"
+      - "mes"
+
+  process_validation:
+    product_id: "process_validation"
+    display_name: "Process Excellence (Px)"
+    aliases: ["px", "process"]
+    description: "Process validation, equipment qualification, CSV"
+    forbidden_phrases:
+      - "process validation lifecycle"
+      - "equipment qualification backlog"
+      - "csv validation effort"
+      - "iq oq pq"
+      - "validation master plan"
+      - "computer system validation"
+    unique_identifiers:
+      - "csv"
+      - "iq/oq/pq"
+      - "validation lifecycle"
+
+  asset_excellence:
+    product_id: "asset_excellence"
+    display_name: "Asset Excellence (Ax)"
+    aliases: ["ax", "asset", "assets"]
+    description: "Maintenance, calibration, asset lifecycle, CMMS"
+    forbidden_phrases:
+      - "calibration schedule"
+      - "calibration compliance"
+      - "preventive maintenance schedule"
+      - "cmms implementation"
+      - "asset reliability"
+      - "equipment uptime"
+      - "maintenance backlog"
+      - "out of tolerance"
+    unique_identifiers:
+      - "cmms"
+      - "calibration schedule"
+      - "pm schedule"
+
+  regulatory_submissions:
+    product_id: "regulatory_submissions"
+    display_name: "Regulatory Excellence (Rx)"
+    aliases: ["rx", "regulatory"]
+    description: "Submissions, regulatory intelligence, dossier management"
+    forbidden_phrases:
+      - "regulatory submission"
+      - "dossier management"
+      - "regulatory intelligence"
+      - "agency submission"
+      - "registration timeline"
+      - "filing deadline"
+    unique_identifiers:
+      - "dossier"
+      - "submission timeline"
+      - "regulatory filing"
+
+# Legacy product alias mapping (for backward compatibility)
+# Maps old tokens to new internal product_id
+product_alias_map:
+  qx: "quality_qms"
+  mx: "manufacturing_mes"
+  px: "process_validation"
+  ax: "asset_excellence"
+  rx: "regulatory_submissions"
+  # Also support display names
+  quality: "quality_qms"
+  manufacturing: "manufacturing_mes"
+  process: "process_validation"
+  asset: "asset_excellence"
+  assets: "asset_excellence"
+  regulatory: "regulatory_submissions"
+
+# =============================================================================
+# PERSONA DEFINITIONS WITH PRODUCT ELIGIBILITY
+# =============================================================================
+# CRITICAL: Product eligibility is enforced downstream in angle/offer selection
+# - eligible_products: Can be primary messaging focus (use internal product_id)
+# - secondary_products: Can be mentioned as related benefit
+# - forbidden_products: Must NEVER be referenced (validation will fail)
+# - automation_allowed: Whether automated email generation is permitted
+# - default_confidence_cap: Maximum confidence level for this persona
+
+personas:
+  quality:
+    description: "QA/QC leaders focused on compliance, deviations, CAPA, audit readiness"
+    patterns:
+      - "vp quality"
+      - "vice president quality"
+      - "head of quality"
+      - "director quality"
+      - "quality director"
+      - "qa director"
+      - "vp qa"
+      - "quality assurance"
+      - "chief quality"
+      - "vp qc"
+      - "quality control"
+      - "compliance officer"
+      - "head of compliance"
+      - "director compliance"
+      - "vp compliance"
+      - "chief compliance"
+      - "qms"
+      - "quality systems"
+      - "quality engineering"
+    eligible_products: ["quality_qms"]
+    secondary_products: ["process_validation", "regulatory_submissions"]
+    forbidden_products: ["manufacturing_mes", "asset_excellence"]
+    safe_angle: "capa_cycle_time"
+    framing: "compliance_and_risk"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  manufacturing:
+    description: "Production/manufacturing leaders focused on batch execution, throughput, MES"
+    patterns:
+      - "vp manufacturing"
+      - "vice president manufacturing"
+      - "head of manufacturing"
+      - "director manufacturing"
+      - "manufacturing director"
+      - "plant manager"
+      - "plant director"
+      - "production director"
+      - "vp production"
+      - "head of production"
+      - "director production"
+      - "manufacturing operations"
+      - "production manager"
+      - "site manufacturing"
+    eligible_products: ["manufacturing_mes"]
+    secondary_products: ["process_validation", "asset_excellence"]
+    forbidden_products: ["quality_qms", "regulatory_submissions"]
+    safe_angle: "batch_release_time"
+    framing: "throughput_and_efficiency"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  operations:
+    description: "Site/ops leaders with broad oversight spanning quality and production"
+    patterns:
+      - "vp operations"
+      - "vice president operations"
+      - "head of operations"
+      - "director operations"
+      - "operations director"
+      - "site director"
+      - "vp ops"
+      - "coo"
+      - "chief operating"
+      - "evp operations"
+      - "svp operations"
+      - "general manager"
+      - "site head"
+    eligible_products: ["quality_qms", "manufacturing_mes"]
+    secondary_products: ["process_validation", "asset_excellence"]
+    forbidden_products: []
+    safe_angle: "operational_efficiency"
+    framing: "site_performance"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  it:
+    description: "IT leaders focused on systems, validation, data integrity, governance"
+    patterns:
+      - "cio"
+      - "chief information"
+      - "vp it"
+      - "vice president it"
+      - "it director"
+      - "director it"
+      - "head of it"
+      - "chief technology"
+      - "cto"
+      - "vp technology"
+      - "director technology"
+      - "head of technology"
+      - "it manager"
+      - "enterprise systems"
+      - "gxp systems"
+      - "csv"
+      - "computer systems validation"
+      - "validation manager"
+      - "director validation"
+    eligible_products: ["quality_qms", "manufacturing_mes", "process_validation"]
+    secondary_products: ["asset_excellence"]
+    forbidden_products: ["regulatory_submissions"]
+    safe_angle: "validation_governance"
+    framing: "governance_and_integration"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  digital:
+    description: "Digital/automation leaders focused on transformation, Industry 4.0"
+    patterns:
+      - "vp digital"
+      - "vice president digital"
+      - "head of digital"
+      - "director digital"
+      - "digital transformation"
+      - "chief digital"
+      - "cdo"
+      - "vp automation"
+      - "director automation"
+      - "head of automation"
+      - "automation manager"
+      - "industry 4.0"
+      - "smart manufacturing"
+      - "digital manufacturing"
+      - "msat"
+      - "manufacturing science"
+    eligible_products: ["manufacturing_mes", "process_validation"]
+    secondary_products: ["quality_qms", "asset_excellence"]
+    forbidden_products: ["regulatory_submissions"]
+    safe_angle: "digital_transformation"
+    framing: "modernization_and_automation"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  assets:
+    description: "Maintenance/reliability leaders focused on equipment, calibration, uptime"
+    patterns:
+      - "vp maintenance"
+      - "director maintenance"
+      - "head of maintenance"
+      - "maintenance manager"
+      - "reliability"
+      - "vp reliability"
+      - "director reliability"
+      - "head of reliability"
+      - "asset management"
+      - "vp asset"
+      - "director asset"
+      - "calibration"
+      - "calibration manager"
+      - "director calibration"
+      - "equipment manager"
+      - "facilities"
+      - "cmms"
+      - "plant engineering"
+    eligible_products: ["asset_excellence"]
+    secondary_products: ["process_validation", "manufacturing_mes"]
+    forbidden_products: ["quality_qms", "regulatory_submissions"]
+    safe_angle: "equipment_reliability"
+    framing: "uptime_and_maintenance"
+    automation_allowed: true
+    default_confidence_cap: "high"
+
+  regulatory:
+    description: "Regulatory affairs leaders focused on submissions, agency interactions"
+    patterns:
+      - "vp regulatory"
+      - "vice president regulatory"
+      - "head of regulatory"
+      - "director regulatory"
+      - "regulatory director"
+      - "regulatory affairs"
+      - "vp ra"
+      - "chief regulatory"
+      - "regulatory operations"
+      - "regulatory submissions"
+      - "regulatory strategy"
+    eligible_products: ["regulatory_submissions"]
+    secondary_products: ["quality_qms"]
+    forbidden_products: ["manufacturing_mes", "asset_excellence", "process_validation"]
+    safe_angle: "regulatory_strategy"
+    framing: "regulatory_compliance"
+    # HIGHER RISK: Regulatory persona requires manual review by default
+    automation_allowed: false
+    default_confidence_cap: "medium"
+
+# Default persona when no pattern matches
+default_persona:
+  persona: "quality"
+  reason: "Fallback - quality is safest default for life sciences"
+  eligible_products: ["quality_qms"]
+  forbidden_products: ["manufacturing_mes", "asset_excellence"]
+  automation_allowed: true
+  default_confidence_cap: "medium"
+
+# =============================================================================
+# AMBIGUITY RESOLUTION STRATEGY
+# =============================================================================
+# When a title matches multiple personas (e.g., "VP Quality & IT Systems"),
+# these settings control how the ambiguity is resolved.
+#
+# Strategy options:
+# - "first_match": Use first matching persona (default, maintains existing behavior)
+# - "most_restrictive": Use persona with most forbidden_products (safest)
+# - "broadest": Use persona with most eligible_products (most options)
+#
+# Constraints applied when ambiguity is detected:
+# - eligible_products: Intersection of all matched personas (conservative)
+# - secondary_products: Empty (no secondary messaging allowed)
+# - forbidden_products: Union of all matched personas (most restrictive)
+# - safe_angle_only: True (forces persona's safe_angle)
+# - confidence_downgrade: True (drops confidence one level)
+# - review_required: True (flags for manual review)
+
+ambiguity_resolution:
+  strategy: "first_match"
+  # Additional constraints applied during ambiguity
+  force_safe_angle: true
+  downgrade_confidence: true
+  require_manual_review: true
+  # Clear secondary products when ambiguous (conservative)
+  clear_secondary_products: true
+
+# =============================================================================
+# ANGLE DEFINITIONS WITH PRODUCT TARGETING
+# =============================================================================
+# Each angle must specify which products it relates to
+# Angle selection will only consider angles where:
+#   - persona matches
+#   - at least one product is in persona's eligible_products
+
+angles:
+  # QMS ANGLES (Quality Excellence)
+  capa_cycle_time:
+    name: "CAPA Cycle Time"
+    description: "Deviation closure, CAPA backlog, investigation efficiency"
+    products: ["quality_qms"]
+    personas: ["quality", "operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["capa", "deviations"]
+    framing: "compliance_and_risk"
+
+  audit_readiness:
+    name: "Audit Readiness"
+    description: "Documentation gaps, inspection prep, compliance gaps"
+    products: ["quality_qms"]
+    personas: ["quality", "regulatory", "operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["audit_readiness", "documentation"]
+    framing: "compliance_and_risk"
+
+  training_compliance:
+    name: "Training Compliance"
+    description: "Training gaps, qualification tracking, competency management"
+    products: ["quality_qms"]
+    personas: ["quality", "operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["training", "qualification"]
+    framing: "compliance_and_risk"
+
+  # MES ANGLES (Manufacturing Excellence)
+  batch_release_time:
+    name: "Batch Release Time"
+    description: "Release delays, review bottlenecks, batch record efficiency"
+    products: ["manufacturing_mes"]
+    personas: ["manufacturing", "operations"]
+    industries: ["pharma", "biotech"]
+    pain_areas: ["batch_release", "batch_review"]
+    framing: "throughput_and_efficiency"
+
+  review_by_exception:
+    name: "Review by Exception"
+    description: "Manual review burden, exception-based workflows"
+    products: ["manufacturing_mes"]
+    personas: ["manufacturing", "operations", "digital"]
+    industries: ["pharma", "biotech"]
+    pain_areas: ["batch_review", "manual_processes"]
+    framing: "throughput_and_efficiency"
+
+  production_visibility:
+    name: "Production Visibility"
+    description: "Real-time production data, shop floor visibility"
+    products: ["manufacturing_mes"]
+    personas: ["manufacturing", "operations", "digital"]
+    industries: ["pharma", "biotech"]
+    pain_areas: ["visibility", "production"]
+    framing: "throughput_and_efficiency"
+
+  # PROCESS VALIDATION ANGLES (Process Excellence)
+  validation_governance:
+    name: "Validation Governance"
+    description: "CSV burden, validation lifecycle, system qualification"
+    products: ["process_validation"]
+    personas: ["it", "digital", "quality"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["validation", "csv", "system_sprawl"]
+    framing: "governance_and_integration"
+
+  equipment_qualification:
+    name: "Equipment Qualification"
+    description: "IQ/OQ/PQ efficiency, qualification backlogs"
+    products: ["process_validation"]
+    personas: ["it", "digital", "manufacturing", "assets"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["qualification", "validation"]
+    framing: "governance_and_integration"
+
+  # ASSET EXCELLENCE ANGLES
+  equipment_reliability:
+    name: "Equipment Reliability"
+    description: "Unplanned downtime, preventive maintenance, calibration"
+    products: ["asset_excellence"]
+    personas: ["assets", "manufacturing", "operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["maintenance", "calibration", "uptime"]
+    framing: "uptime_and_maintenance"
+
+  calibration_compliance:
+    name: "Calibration Compliance"
+    description: "Calibration tracking, out-of-tolerance events, audit exposure"
+    products: ["asset_excellence"]
+    personas: ["assets", "quality"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["calibration", "compliance"]
+    framing: "uptime_and_maintenance"
+
+  # REGULATORY ANGLES
+  regulatory_strategy:
+    name: "Regulatory Strategy"
+    description: "Submission timelines, regulatory intelligence, agency interactions"
+    products: ["regulatory_submissions"]
+    personas: ["regulatory"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["submissions", "regulatory"]
+    framing: "regulatory_compliance"
+
+  # CROSS-PRODUCT ANGLES (require specific persona validation)
+  operational_efficiency:
+    name: "Operational Efficiency"
+    description: "Site-wide efficiency, cross-functional workflows"
+    products: ["quality_qms", "manufacturing_mes"]
+    personas: ["operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["efficiency", "throughput"]
+    framing: "site_performance"
+
+  digital_transformation:
+    name: "Digital Transformation"
+    description: "Industry 4.0, automation, digital maturity"
+    products: ["manufacturing_mes", "process_validation"]
+    personas: ["digital", "it"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["automation", "modernization"]
+    framing: "modernization_and_automation"
+
+  data_integrity:
+    name: "Data Integrity"
+    description: "Audit trails, 21 CFR Part 11, ALCOA+"
+    products: ["quality_qms", "manufacturing_mes", "process_validation"]
+    personas: ["it", "quality", "operations"]
+    industries: ["pharma", "biotech", "medical_device"]
+    pain_areas: ["data_integrity", "audit_trails"]
+    framing: "governance_and_integration"
+
+# =============================================================================
+# OFFER/CTA DEFINITIONS WITH PRODUCT TARGETING
+# =============================================================================
+# Each offer must specify which products it relates to
+# Offer selection will only consider offers where:
+#   - persona matches
+#   - at least one product is in persona's eligible_products
+
+offers:
+  # QMS OFFERS
+  checklist_capa:
+    deliverable: "1-page checklist"
+    products: ["quality_qms"]
+    pain_areas: ["capa", "audit_readiness", "deviations"]
+    personas: ["quality", "operations"]
+    text: "If helpful, I can send a 1-page checklist QA leaders use to find the biggest time sinks in deviations, CAPA, and training. Want it?"
+
+  checklist_audit:
+    deliverable: "audit prep checklist"
+    products: ["quality_qms"]
+    pain_areas: ["audit_readiness", "documentation"]
+    personas: ["quality", "regulatory"]
+    text: "I can send the 1-page audit readiness checklist QA leaders use before inspections. Want it?"
+
+  # MES OFFERS
+  benchmark_batch_release:
+    deliverable: "benchmark sheet"
+    products: ["manufacturing_mes"]
+    pain_areas: ["batch_release", "batch_review"]
+    personas: ["manufacturing", "operations"]
+    text: "If it helps, I can share a simple benchmark sheet of the 5 metrics ops leaders track when they attack release time. Want me to send it?"
+
+  checklist_ebr:
+    deliverable: "eBR readiness checklist"
+    products: ["manufacturing_mes"]
+    pain_areas: ["batch_review", "manual_processes"]
+    personas: ["manufacturing", "operations", "digital"]
+    text: "I can send the quick checklist manufacturing teams use to assess eBR readiness. Want it?"
+
+  # PROCESS VALIDATION OFFERS
+  architecture_validation:
+    deliverable: "reference architecture"
+    products: ["process_validation"]
+    pain_areas: ["validation", "csv", "system_sprawl"]
+    personas: ["it", "digital"]
+    text: "If useful, I can send a 1-page reference architecture teams use to scope validation without blowing up effort. Want it?"
+
+  # ASSET EXCELLENCE OFFERS
+  checklist_calibration:
+    deliverable: "calibration checklist"
+    products: ["asset_excellence"]
+    pain_areas: ["calibration", "maintenance"]
+    personas: ["assets", "manufacturing"]
+    text: "I can send the calibration compliance checklist maintenance teams use to reduce audit exposure. Want it?"
+
+  checklist_pm:
+    deliverable: "PM optimization checklist"
+    products: ["asset_excellence"]
+    pain_areas: ["maintenance", "uptime"]
+    personas: ["assets", "operations"]
+    text: "I can share the preventive maintenance optimization checklist. Want it?"
+
+  # CROSS-PRODUCT OFFERS (must validate persona eligibility)
+  architecture_system_sprawl:
+    deliverable: "reference architecture"
+    products: ["quality_qms", "manufacturing_mes", "process_validation"]
+    pain_areas: ["system_sprawl", "data_integrity"]
+    personas: ["it", "digital", "operations"]
+    text: "If useful, I can send a 1-page reference architecture teams use to scope QMS plus MES data flows without blowing up validation effort. Want it?"
+
+# Subject line options by pain area
+subjects:
+  capa:
+    - "CAPA backlog"
+    - "Deviation cycle time"
+    - "CAPA closure"
+
+  audit_readiness:
+    - "Audit readiness"
+    - "Audit prep"
+    - "Inspection prep"
+
+  batch_release:
+    - "Batch release time"
+    - "Batch release delays"
+
+  batch_review:
+    - "Review by exception"
+    - "Batch review"
+
+  system_sprawl:
+    - "Validation load"
+    - "System sprawl"
+    - "QMS tech debt"
+
+  data_integrity:
+    - "Audit trails"
+    - "Data integrity"
+
+  design_control:
+    - "DHF cycle time"
+    - "Design control"
+
+# Writing constraints
+constraints:
+  default_profile:
+    word_count_min: 50
+    word_count_max: 100
+    sentence_count_min: 3
+    sentence_count_max: 4
+    subject_word_max: 4
+    no_meeting_ask: true
+    no_product_pitch: true
+    banned_phrases:
+      - "reach out"
+      - "touch base"
+      - "circle back"
+      - "hop on a call"
+      - "quick chat"
+      - "pick your brain"
+      - "game changer"
+      - "cutting edge"
+      - "best in class"
+      - "industry leading"
+      - "revolutionary"
+      - "leverage"
+      - "synergy"
+      - "paradigm shift"
+      - "world class"
+
+# Signal detection rules
+signal_rules:
+  scope_types:
+    - "funding_round"      # Recent funding event
+    - "leadership_change"  # New exec in relevant role
+    - "regulatory_event"   # Warning letter, consent decree
+    - "expansion"          # New facility, acquisition
+    - "product_launch"     # New product approval
+
+  recency_thresholds:
+    funding_round: 180       # 6 months
+    leadership_change: 90    # 3 months
+    regulatory_event: 365    # 12 months
+    expansion: 180           # 6 months
+    product_launch: 90       # 3 months
+
+# Tiering rules (controls variant count and aggressiveness)
+tiering:
+  tier_a:
+    min_signals: 3
+    description: "High-priority prospects with 3+ qualifying signals"
+
+  tier_b:
+    min_signals: 2
+    description: "Standard prospects with 2+ qualifying signals"
+
+# Confidence modes configuration (controls email specificity based on signal availability)
+# IMPORTANT: These rules are enforced by validators.py - this YAML is the source of truth
+confidence_modes:
+  # Thresholds for mode assignment (based on CITED signal count)
+  thresholds:
+    high: 3      # >= 3 cited signals = HIGH
+    medium: 2    # >= 2 cited signals = MEDIUM
+    low: 1       # >= 1 cited signal = LOW
+    # < 1 cited signal = GENERIC
+
+  # Rules per confidence mode
+  high:
+    description: "Strong personalization with cited company signals"
+    max_company_claims: 2
+    max_signals_to_reference: 2
+    allow_specific_hook: true
+    require_citation: true
+    allow_company_name_in_body: true
+    allow_numbers_and_metrics: true
+    allow_named_initiatives: true
+
+  medium:
+    description: "Moderate personalization with conservative claims"
+    max_company_claims: 1
+    max_signals_to_reference: 1
+    allow_specific_hook: false
+    require_citation: true
+    allow_company_name_in_body: true    # Can say "companies like yours"
+    allow_numbers_and_metrics: false    # No "20% improvement" claims
+    allow_named_initiatives: false      # No "Stilla acquisition" references
+
+  low:
+    description: "Light personalization with single signal reference"
+    max_company_claims: 0
+    max_signals_to_reference: 1
+    allow_specific_hook: false
+    require_citation: true
+    allow_company_name_in_body: false   # No company name mentions
+    allow_numbers_and_metrics: false
+    allow_named_initiatives: false
+
+  generic:
+    description: "Generic persona/industry messaging only - no cited signals"
+    max_company_claims: 0
+    max_signals_to_reference: 0
+    allow_specific_hook: false
+    require_citation: false             # No citations available
+    allow_company_name_in_body: false   # No company name mentions at all
+    allow_numbers_and_metrics: false
+    allow_named_initiatives: false
+
+  # Renderer instructions per mode (passed to LLM)
+  renderer_instructions:
+    high: |
+      HIGH confidence: Use up to 2 specific company signals.
+      Reference signals by ID in used_signal_ids array.
+      Make concrete factual claims backed by cited signals.
+      You may use company name, numbers, and named initiatives from signals.
+
+    medium: |
+      MEDIUM confidence: Use at most 1 company signal conservatively.
+      Soften language: "Companies like yours often..." or "Organizations in {industry}..."
+      Reference at most 1 signal ID.
+      You may mention the company name generically.
+      Do NOT use specific numbers or named initiatives.
+
+    low: |
+      LOW confidence: Use at most 1 signal reference, phrased generically.
+      Do NOT mention the company name directly.
+      Do NOT use specific numbers or named initiatives.
+      Phrase as industry trends, not company-specific claims.
+      used_signal_ids may contain at most 1 ID.
+
+    generic: |
+      GENERIC confidence: Do NOT reference any company-specific signals or facts.
+      Use ONLY generic persona/industry pain points.
+      Do NOT mention the company name.
+      Do NOT use numbers or named initiatives.
+      Do NOT invent facts - stick to widely accepted industry challenges.
+      used_signal_ids must be empty array.
+
+  # Validation rules per mode (enforced by validators.py)
+  # CRITICAL: These are the source of truth - validators load from here
+  validation_rules:
+    high:
+      max_used_signal_ids: 2
+      forbid_company_name_mentions: false
+      forbid_numbers: false
+      forbid_named_entities: false
+      require_source_type:
+        - "public_url"
+        - "user_provided"
+
+    medium:
+      max_used_signal_ids: 1
+      forbid_company_name_mentions: false  # Generic mentions OK
+      forbid_numbers: true                 # ENFORCED: No specific numbers
+      forbid_named_entities: true          # ENFORCED: No named initiatives/entities
+      require_source_type:
+        - "public_url"
+        - "user_provided"
+
+    low:
+      max_used_signal_ids: 1
+      forbid_company_name_mentions: true   # ENFORCED: No company name
+      forbid_numbers: true                 # ENFORCED: No specific numbers
+      forbid_named_entities: true          # ENFORCED: No named entities
+      require_source_type: []              # Can use any signal type generically
+
+    generic:
+      max_used_signal_ids: 0               # Must be empty
+      forbid_company_name_mentions: true   # ENFORCED: No company name at all
+      forbid_numbers: true                 # ENFORCED: No numbers
+      forbid_named_entities: true          # ENFORCED: No named entities
+      require_source_type: []              # No signals allowed
+
+# Semantic guard configuration (validates signal usage in email body)
+semantic_guard:
+  # Minimum fraction of key terms from signal that must appear in email
+  min_term_coverage: 0.5    # 50% of key terms must match (increased from 0.3)
+
+  # Minimum absolute number of key terms that must match
+  min_absolute_terms: 2     # At least 2 terms must appear
+
+  # Maximum key terms to extract per signal (for efficiency)
+  max_key_terms_per_signal: 10
+
+  # Minimum word length to consider as key term
+  min_key_term_length: 3
+
+# Angle scoring configuration
+angle_scoring:
+  # Enable LLM-based angle scoring (default: true, uses LLM to rank angles)
+  enable_angle_scoring: true
+
+  # Model to use for angle scoring (when enabled)
+  # Can also be set via ANTHROPIC_MODEL environment variable
+  angle_scoring_model: "claude-sonnet-4-20250514"
+
+  # Scoring weights (must sum to ~1.0)
+  angle_score_weights:
+    relevance: 0.45        # How well signals match this angle
+    urgency: 0.35          # How time-sensitive the pain is
+    reply_likelihood: 0.20 # How likely to get a response
+
+  # Minimum confidence threshold (0.0-1.0, default 0.0 = accept all)
+  angle_score_min_confidence: 0.0
+
+  # Maximum candidate angles to score (limits LLM input size)
+  max_candidate_angles: 5
+
+  # Deterministic scoring priorities (used for tie-breaking and fallback)
+  deterministic_priorities:
+    regulatory_pressure: 10
+    operational_cost: 8
+    audit_readiness: 7

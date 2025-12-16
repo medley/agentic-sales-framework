@@ -1,0 +1,9 @@
+# Gitleaks configuration
+# These are false positives - ANSI terminal color codes in methodology loader files
+
+[allowlist]
+description = "False positives - ANSI color codes"
+paths = [
+  '''methodologyLoader\.ts''',
+  '''methodology_loader\.md''',
+]

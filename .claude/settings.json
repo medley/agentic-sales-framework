@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(git mv:*)",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Read(/tmp/**)",
+      "Read(sample-data/**)",
+      "Read(.claude/**)",
+      "Read(Framework/**)",
+      "Write(sample-data/Runtime/**)",
+      "Edit(sample-data/Runtime/**)",
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:www.haihai.ai)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "Skill(*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "hooks_config_path": ".claude/hooks/hooks.json"
+}

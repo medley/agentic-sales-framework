@@ -1,0 +1,48 @@
+# Company data (contains proprietary info)
+sample-data/
+
+# Version control
+.git/
+.gitignore
+
+# OS metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+
+# Backups
+*.backup
+
+# Node (if using Node-based tools)
+node_modules/
+npm-debug.log*
+
+# Python (if using Python scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/

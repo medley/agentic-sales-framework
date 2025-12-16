@@ -1,0 +1,51 @@
+# Environment variables
+.env
+
+# Private keys and credentials
+*.pem
+*_private_key.pem
+.zoominfo_private_key.pem
+
+# Cache directory
+.cache/
+
+# Temp directory (pipeline intermediate files)
+.tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+deliverables/
+
+# Prospecting runtime artifacts
+deliverables/
+02_Prospecting/agent-prospecting/
+.tmp/
+*.jsonl
+
+# Generated scoring / debug artifacts
+deliverables/angle_scoring.json
+
+# Approval / rendering outputs (runtime only)
+approved/
+drafts/
+runs/
+

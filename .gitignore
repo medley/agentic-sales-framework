@@ -1,0 +1,37 @@
+# Core exclusions
+.obsidian/
+.DS_Store
+*.log
+*.tmp
+
+# Company data — keep structure (README.md, .gitkeep), ignore actual content
+# First, ignore everything in sample-data
+sample-data/*
+sample-data/**/*
+
+# Then, un-ignore directories and structural files
+!sample-data/*/
+!sample-data/**/*/
+!sample-data/**/README.md
+!sample-data/**/.gitkeep
+
+# Local environment / OS metadata
+.vscode/
+.idea/
+*.bak
+*.backup
+*.swp
+.env
+__pycache__/
+
+# Personal notes and scratch files
+Project Notes Folder/
+.ai/
+
+# Node.js dependencies and build artifacts
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Test outputs
+tests/results/*.json

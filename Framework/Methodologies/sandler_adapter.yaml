@@ -1,0 +1,395 @@
+# Sandler Methodology Adapter Configuration
+# Conforms to Framework/Methodologies/METHODOLOGY_SPEC.md
+
+metadata:
+  name: "Sandler Selling System"
+  version: "1.0"
+  description: "Qualification-focused sales methodology using Submarine model"
+  last_updated: "{{ISO_DATE}}"
+  source_knowledge: "../../sample-data/Runtime/_Shared/knowledge/methodologies/Sandler/stage_inventory__Sandler.md"
+
+# Core philosophy
+philosophy:
+  - "You can't lose what you don't have"
+  - "No free consulting - qualify before presenting"
+  - "Equal business stature - seller and buyer are equals"
+  - "Emotional commitment beats intellectual agreement"
+  - "Disqualification is success"
+  - "No mutual mystification"
+
+# Sandler stages (Submarine compartments)
+stages:
+  - number: 0
+    name: "Bonding & Rapport"
+    type: "foundation"
+    continuous: true
+    description: "Establish trusted advisor relationship vs. vendor status"
+
+  - number: 1
+    name: "Up-Front Contracts"
+    type: "foundation"
+    continuous: true
+    description: "Establish clear expectations for every interaction"
+
+  - number: 2
+    name: "Pain"
+    type: "qualifying"
+    can_disqualify: true
+    description: "Uncover compelling emotional reasons to change"
+
+  - number: 3
+    name: "Budget"
+    type: "qualifying"
+    can_disqualify: true
+    description: "Confirm willingness AND ability to invest"
+
+  - number: 4
+    name: "Decision"
+    type: "qualifying"
+    can_disqualify: true
+    description: "Understand decision process and access decision makers"
+
+  - number: 5
+    name: "Fulfillment"
+    type: "closing"
+    description: "Present solutions matched to qualified pains; obtain decision"
+    prerequisite: "Stages 2, 3, 4 must be complete"
+
+  - number: 6
+    name: "Post-Sell"
+    type: "closing"
+    description: "Cement close, prevent buyer's remorse, set stage for referrals"
+
+# Exit criteria by stage
+exit_criteria:
+  bonding_and_rapport:
+    - "Relationship positioned toward 'Trusted Advisor' (not 'Vendor')"
+    - "Mirroring established (physiology, tonality, vocabulary)"
+    - "Client feels 'more OK' than salesperson"
+    - "Mutual appreciation and trust evident"
+
+  up_front_contracts:
+    - "Purpose explicitly stated and agreed"
+    - "Time boundaries established and confirmed"
+    - "Both parties' agenda items documented"
+    - "Intended outcome mutually defined"
+    - "Permission to say 'no' established (both parties)"
+    - "'It may not be a fit' understanding confirmed"
+
+  pain:
+    - "Prospect has personal AND emotional pain solvable with your product/service"
+    - "Gap between desired and current outcomes clearly established"
+    - "All three pieces of Pain Puzzle complete: Observed Problem + Causes + Impact"
+    - "Prospect committed to addressing problem NOW or very near future"
+    - "Prospect uses emotionally-oriented language (concerned, frustrated, unhappy, alarmed, committed, eager, determined)"
+    - "Personal stakes articulated (job security, bonus, promotion at risk)"
+    - "Pain intensity rated 7+ on 1-10 scale"
+
+  budget:
+    - "Prospect shares budget information willingly"
+    - "Money available confirmed (or timeline for availability established)"
+    - "Budget range established (if not specific number)"
+    - "Non-monetary investments confirmed (time, energy, training, changes)"
+    - "Both parties on same page regarding financial commitment"
+    - "Payment plan established if no current budget"
+
+  decision:
+    - "All decision makers identified"
+    - "All six newspaper elements answered (who, what, when, where, how, why)"
+    - "All decision makers confirmed to attend presentation"
+    - "Prospect commits to 'yes' or 'no' decision at end of presentation (not 'think-it-over')"
+    - "Timing of decision consistent with your goals"
+    - "Sufficient time to arrange implementation"
+
+  fulfillment:
+    - "All decision makers' pains addressed in presentation"
+    - "Solutions validated with third-party evidence"
+    - "Financial justification confirmed"
+    - "Decision obtained ('yes' or 'no' - not 'think-it-over')"
+
+  post_sell:
+    - "Money collected"
+    - "Implementation transition completed"
+    - "Review meetings established"
+    - "Referrals obtained"
+    - "All potential landmines addressed"
+
+# Required artifacts by stage
+artifacts_by_stage:
+  bonding_and_rapport:
+    - "Client Engager tool"
+    - "Communication preferences (VAK) documented"
+    - "DISC behavioral style profile"
+    - "DISC Adapter worksheet"
+    - "Bonding & Rapport DISC worksheet"
+
+  up_front_contracts:
+    - "Rules of Engagement tool"
+    - "Up-Front Contract Builder worksheet"
+    - "First Meeting Organizer (for initial meetings)"
+    - "Ultimate Up-Front Contract (before presentation)"
+
+  pain:
+    - "Pain Discovery Chart"
+    - "Pain Question Creator"
+    - "Pain Identifier worksheet"
+    - "Pain Funnel documentation (8-question sequence)"
+    - "Quantified cost of pain breakdown"
+
+  budget:
+    - "Money Concept Profile"
+    - "Budget Checklist worksheet"
+    - "Historical investment data documented"
+    - "Budget discussion notes with questioning strategies"
+
+  decision:
+    - "Newspaper Reporter Approach worksheet (who, what, when, where, how, why)"
+    - "Decision Process worksheet (stakeholders, roles, buyer types, DISC profiles)"
+    - "Decision Timeline Identifier"
+    - "Ultimate Up-Front Contract"
+    - "Summary of Pain, Budget, Decision confirmed by prospect"
+    - "Sales Qualifier Practice worksheet"
+
+  fulfillment:
+    - "Presentation Maximizer worksheet"
+    - "Presentation Creator deck (minimum 3 pain points)"
+    - "Sentiment ratings for each decision maker (+, +/-, -)"
+    - "Competitive landscape assessment"
+    - "Deal breaker documentation"
+
+  post_sell:
+    - "Post-Sell Strategy Creator (4 landmine categories)"
+    - "Post-Sell Navigator worksheet"
+    - "Buyer's Remorse overcome strategy"
+    - "Vendor Vengeance response plan"
+    - "Referral ask execution plan"
+
+# Risk indicators (deal stalling/at risk)
+risks:
+  bonding_and_rapport:
+    - "Relationship closer to 'Vendor' than 'Trusted Advisor'"
+    - "Formal/distant communication style persists"
+    - "Client discomfort evident"
+    - "Mismatched communication styles"
+
+  up_front_contracts:
+    - "Vague or undefined meeting objectives"
+    - "Prospect unwilling to commit to time boundaries"
+    - "Wishy-washy language about outcomes"
+    - "No clear next steps defined"
+
+  pain:
+    - "Intellectual vs. emotional language ('thinking about,' 'considering alternatives')"
+    - "Problem existed long time without action (no urgency)"
+    - "Cannot articulate personal cost"
+    - "Pain intensity rated below 7 on 1-10 scale"
+    - "Only symptoms identified, not root causes"
+
+  budget:
+    - "Prospect unwilling to share any financial guidelines"
+    - "Won't commit to when money will be available"
+    - "Asks for proposal/presentation before discussing budget"
+    - "Must buy from 'cheapest' supplier with no exceptions"
+    - "Salesperson uncomfortable discussing money"
+
+  decision:
+    - "Additional participants in decision process you haven't engaged"
+    - "Key decision maker won't be available for presentation"
+    - "Unwilling to commit to making decision at end of presentation"
+    - "Presentation scheduled weeks before decision date"
+    - "Incomplete answers to six newspaper elements"
+
+  fulfillment:
+    - "Only symptoms addressed, not pain causes"
+    - "Decision makers marked '-' (negative sentiment)"
+    - "Key decision makers not attending with no action plan"
+    - "Incumbent promised 'last look'"
+    - "Deal breakers present"
+
+  post_sell:
+    - "Identified landmines without strategies"
+    - "Minor objections surfacing unexpectedly"
+    - "Wishy-washy language from buyer"
+    - "No review meetings scheduled"
+    - "Buyer's remorse indicators"
+
+# Momentum signals (deal progressing)
+signals:
+  bonding_and_rapport:
+    - "Client shares personal information"
+    - "Relaxed, open body language"
+    - "Mirroring occurs naturally"
+    - "Trust indicators present"
+
+  up_front_contracts:
+    - "Specific, concrete agreements established"
+    - "Prospect honors time commitments"
+    - "Clear decision points defined"
+    - "Contracts reviewed and reconfirmed at each interaction"
+
+  pain:
+    - "Emotionally-oriented words used consistently"
+    - "Personal stakes clearly articulated"
+    - "Prospect took action NOW"
+    - "Pain intensity 8+ on 1-10 scale"
+    - "Root causes acknowledged"
+
+  budget:
+    - "Shares budget number willingly"
+    - "Confirms funds currently available"
+    - "Comfortable with investment range"
+    - "Willing to discuss circumstances for not buying strictly on price"
+    - "Willing/able to make non-monetary investments"
+
+  decision:
+    - "Agrees to have all decision makers present"
+    - "Commits to uninterrupted time for presentation"
+    - "Agrees to 'yes' or 'no' decision at end (not think-it-over)"
+    - "Presentation scheduled close to decision date"
+    - "All six newspaper elements fully answered"
+
+  fulfillment:
+    - "Relationship toward 'Trusted Advisor' end"
+    - "Financial impact quantified with ROI demonstrated"
+    - "Decision makers marked '+' (positive sentiment)"
+    - "All key decision makers attending"
+    - "Up-front contract established and agreed"
+
+  post_sell:
+    - "Clear strategies documented for all landmines"
+    - "Up-front contract for minor issues established"
+    - "Review meetings scheduled"
+    - "No surprises principle maintained"
+    - "Implementation proceeding smoothly"
+
+# Recommended prompts by stage
+recommended_prompts:
+  bonding_and_rapport:
+    - "discovery_prep"
+    - "stakeholder_mapping"
+
+  up_front_contracts:
+    - "agenda_internal"
+    - "agenda_customer"
+
+  pain:
+    - "discovery_prep"
+    - "pain_discovery"
+    - "stakeholder_mapping"
+
+  budget:
+    - "budget_discussion"
+    - "roi_outline"
+
+  decision:
+    - "demo_prep"
+    - "executive_brief"
+    - "stakeholder_mapping"
+
+  fulfillment:
+    - "demo_prep"
+    - "presentation_builder"
+    - "executive_brief"
+
+  post_sell:
+    - "handover_builder"
+    - "post_sell_strategy"
+    - "referral_request"
+
+# Disqualification criteria
+disqualification:
+  pain:
+    - "What's required to 'measure up' exceeds what you can/willing to provide"
+    - "No correlation between offering and prospect's problem"
+    - "Prospect not committed to addressing problem NOW or near future"
+    - "Pain intensity consistently below 7 on 1-10 scale"
+
+  budget:
+    - "Prospect unwilling to share financial guidelines"
+    - "Has budget but unwilling to invest it"
+    - "Cannot/will not commit non-monetary investments"
+    - "Investment required far exceeds prospect's capacity"
+
+  decision:
+    - "Cannot meet requirements of prospect's decision-making process"
+    - "Timing of decision inconsistent with your goals"
+    - "Insufficient time to arrange implementation"
+    - "Unable to access all decision makers"
+    - "Prospect unwilling to commit to making a decision"
+
+# Key techniques
+techniques:
+  pain_funnel:
+    - "Tell me more about that..."
+    - "Can you be more specific? Give me an example."
+    - "How long has that been a problem?"
+    - "What have you tried to do about that?"
+    - "And did that work?"
+    - "How much do you think that has cost you?"
+    - "How do you feel about that?"
+    - "Have you given up trying to deal with the problem?"
+
+  budget_approaches:
+    - "Third-Party Story: Share similar costs, ask if comfortable in range"
+    - "Bracketing: Provide range, ask where they fall"
+    - "Direct Ask: In round numbers, what amount do you have in mind?"
+
+  decision_mapping:
+    - "Newspaper Reporter: Who, What, When, Where, How, Why"
+    - "Cast of Characters: Map all participants with roles, pains, sentiment"
+    - "Timeline Identifier: Work backward from implementation date"
+
+  negative_reverse:
+    - "It may not be a fit"
+    - "I'm not sure we can help you"
+    - "You should tell me 'no' if you're not 100% comfortable"
+
+# Crosswalk to default methodology
+crosswalk_to_default:
+  - sandler_stage: "Bonding & Rapport"
+    default_stage: "All stages (foundation)"
+    notes: "Sandler treats as continuous; default may not explicitly track"
+
+  - sandler_stage: "Up-Front Contracts"
+    default_stage: "All stages (foundation)"
+    notes: "Sandler establishes contract per interaction; default may assume agenda"
+
+  - sandler_stage: "Pain"
+    default_stage: "Stage 1: Discover"
+    notes: "Sandler requires emotional commitment; default may accept intellectual interest"
+
+  - sandler_stage: "Budget"
+    default_stage: "Stage 3: Propose"
+    notes: "Sandler discusses BEFORE proposal; default often after"
+
+  - sandler_stage: "Decision"
+    default_stage: "Stage 4: Select"
+    notes: "Sandler maps process before competing; default may navigate during selection"
+
+  - sandler_stage: "Fulfillment"
+    default_stage: "Stages 3-4: Propose/Select"
+    notes: "Sandler presents AFTER qualification; default may present earlier"
+
+  - sandler_stage: "Post-Sell"
+    default_stage: "Stage 7: Won + beyond"
+    notes: "Sandler emphasizes buyer's remorse prevention; default focuses on handover"
+
+# Usage notes
+usage_notes:
+  best_for:
+    - "Complex B2B sales with multiple decision makers"
+    - "High-value deals where qualification ROI is high"
+    - "Sales cycles where 'tire-kickers' waste significant time"
+    - "Industries where buyer's remorse or deal fallout is common"
+
+  avoid_when:
+    - "Transactional, low-value sales (overhead too high)"
+    - "Single-decision-maker scenarios (less qualification needed)"
+    - "Product-led growth models (buyer self-qualifies)"
+
+  common_pitfalls:
+    - "Presenting too early (before Pain/Budget/Decision complete)"
+    - "Accepting intellectual vs. emotional commitment"
+    - "Free consulting (detailed solutions without budget confirmation)"
+    - "Skipping up-front contracts (making assumptions)"
+    - "Ignoring disqualification signals"

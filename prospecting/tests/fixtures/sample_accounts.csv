@@ -1,0 +1,6 @@
+company_name,score,tier,domain,tags
+Acme Medical Devices,95,A,acmemedical.com,"quality_focused,regulatory"
+Example Corp,92,A,examplecorp.com,"operations_focused,large_enterprise"
+Test Medical Systems,88,A,testmedical.com,"regulatory,quality_focused"
+Sample Industries Inc,85,B,sampleind.com,operations_focused
+Demo Labs,82,A,demolabs.com,"it_focused,digital"
